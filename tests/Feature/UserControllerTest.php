@@ -8,6 +8,14 @@ use Tests\TestCase;
 
 class UserControllerTest extends TestCase
 {
+    protected static $reset;
+    protected static $token;
+    public static function setUpBeforeClass(): void
+    {
+        self::$reset = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTY1MTQzOTEyMiwiZXhwIjoxNjUxNDQyNzIyLCJuYmYiOjE2NTE0MzkxMjIsImp0aSI6InlGQjB4cEN1d054NTI2NzAiLCJzdWIiOjMsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.Fq5FATzYTv_IktXgvLUZwKT_Piu19gGCS0fYmHjnGZ0";
+        self::$token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTY1MTQzNjM2MSwiZXhwIjoxNjUxNDM5OTYxLCJuYmYiOjE2NTE0MzYzNjEsImp0aSI6IlB1dkhuVHNnbEdhUDUxMW0iLCJzdWIiOjEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.mHb991Evkvds3Hikda3XNfe1cZWf4-onuZL8TInVQ8M";
+    }
+
     /**
      * Successfull Registration
      * This test is to check user Registered Successfully or not
@@ -23,9 +31,11 @@ class UserControllerTest extends TestCase
             ->json('POST', '/api/register', [
                 "first_name" => "Arafath",
                 "last_name" => "Baig",
+                "phone_number" => "1234567890",
                 "email" => "arafath@gamil.com",
                 "password" => "arafath",
-                "password_confirmation" => "arafath"
+                "password_confirmation" => "arafath",
+                "role" => ""
             ]);
         $response->assertStatus(201)->assertJson(['message' => 'User Successfully Registered']);
     }
@@ -45,11 +55,13 @@ class UserControllerTest extends TestCase
             ->json('POST', '/api/register', [
                 "first_name" => "Arafath",
                 "last_name" => "Baig",
-                "email" => "arafathbaig@gamil.com",
-                "password" => "abcdefghij",
-                "password_confirmation" => "abcdefghij"
+                "phone_number" => "1234567890",
+                "email" => "arafath@gamil.com",
+                "password" => "arafath",
+                "password_confirmation" => "arafath",
+                "role" => ""
             ]);
-        $response->assertStatus(401)->assertJson(['message' => 'The email has already been taken.']);
+        $response->assertStatus(401)->assertJson(['message' => 'The email has already been taken']);
     }
 
     /**
@@ -66,8 +78,8 @@ class UserControllerTest extends TestCase
             'POST',
             '/api/login',
             [
-                "email" => "arafathbaig@gamil.com",
-                "password" => "abcdefghij"
+                "email" => "arafath@gamil.com",
+                "password" => "arafath"
             ]
         );
         $response->assertStatus(200)->assertJson(['success' => 'Login Successful']);
@@ -88,11 +100,48 @@ class UserControllerTest extends TestCase
             'POST',
             '/api/login',
             [
-                "email" => "arafathbaig@gamil.com",
-                "password" => "abcdefghi"
+                "email" => "arafath@gamil.com",
+                "password" => "arafathbaig"
             ]
         );
         $response->assertStatus(402)->assertJson(['message' => 'Wrong Password']);
+    }
+
+    /**
+     * Test for Successfull Logout
+     * Logout a user using the token generated at login
+     * 
+     * @test
+     */
+    public function successfulLogoutTest()
+    { {
+            $response = $this->withHeaders([
+                'Content-Type' => 'Application/json',
+            ])->json('POST', '/api/logout', [
+                "token" => self::$token
+            ]);
+
+            $response->assertStatus(200)->assertJson(['message' => 'User Successfully Logged Out']);
+        }
+    }
+
+    /**
+     * Test for unSuccessfull Logout
+     * Logout a user using the token generated at login
+     * Passing the wrong token for this test
+     * 
+     * @test
+     */
+    public function unsuccessfulLogoutTest()
+    { {
+            $response = $this->withHeaders([
+                'Content-Type' => 'Application/json',
+            ])->json('POST', '/api/logout', [
+                "token" => self::$token
+            ]);
+
+            $response->assertStatus(401)->assertJson(['message' => 'Invalid Authorization Token']);
+        }
     }
 
     /**
@@ -144,9 +193,9 @@ class UserControllerTest extends TestCase
             $response = $this->withHeaders([
                 'Content-Type' => 'Application/json',
             ])->json('POST', '/api/resetPassword', [
-                "new_password" => "arafath1234",
-                "password_confirmation" => "arafath1234",
-                "token" => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3RcL2FwaVwvZm9yZ290UGFzc3dvcmQiLCJpYXQiOjE2NDk4MjgzMDgsImV4cCI6MTY0OTgzMTkwOCwibmJmIjoxNjQ5ODI4MzA4LCJqdGkiOiI1SURSMzdCY2lIR2VNak41Iiwic3ViIjozLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.d93SpbOT1aL1qAOH9qjWfP2OdqfeB27vMV2fkx1hShA'
+                "new_password" => "arafathbaig1997",
+                "password_confirmation" => "arafathbaig1997",
+                "token" => self::$reset
             ]);
 
             $response->assertStatus(201)->assertJson(['message' => 'Password Reset Successful']);
@@ -168,47 +217,10 @@ class UserControllerTest extends TestCase
             ])->json('POST', '/api/resetPassword', [
                 "new_password" => "arafath1234",
                 "password_confirmation" => "arafath1234",
-                "token" => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3RcL2FwaVwvZm9yZ290UGFzc3dvcmQiLCJpYXQiOjE2NDk4MjgzMDgsImV4cCI6MTY0OTgzMTkwOCwibmJmIjoxNjQ5ODI4MzA4LCJqdGkiOiI1SURSMzdCY2lIR2VNak41Iiwic3ViIjozLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.d93SpbOT1aL1qAOH9qjWfP2OdqfeB27vMV2fkx1hShA'
+                "token" => self::$token
             ]);
 
             $response->assertStatus(400)->assertJson(['message' => 'Invalid Authorization Token']);
-        }
-    }
-
-    /**
-     * Test for Successfull Logout
-     * Logout a user using the token generated at login
-     * 
-     * @test
-     */
-    public function successfulLogoutTest()
-    { {
-            $response = $this->withHeaders([
-                'Content-Type' => 'Application/json',
-            ])->json('POST', '/api/logout', [
-                "token" => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTY0OTkyNTI2MCwiZXhwIjoxNjQ5OTI4ODYwLCJuYmYiOjE2NDk5MjUyNjAsImp0aSI6InI2VklQYlJkWXRscFFjU2EiLCJzdWIiOjQsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.pd5x0pBsl9vdZaKPl2QMh_9WKRPNv2r5sFDjAgW5VTE'
-            ]);
-
-            $response->assertStatus(200)->assertJson(['message' => 'User Successfully Logged Out']);
-        }
-    }
-
-    /**
-     * Test for unSuccessfull Logout
-     * Logout a user using the token generated at login
-     * Passing the wrong token for this test
-     * 
-     * @test
-     */
-    public function unsuccessfulLogoutTest()
-    { {
-            $response = $this->withHeaders([
-                'Content-Type' => 'Application/json',
-            ])->json('POST', '/api/logout', [
-                "token" => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTY0OTkyNTI2MCwiZXhwIjoxNjQ5OTI4ODYwLCJuYmYiOjE2NDk5MjUyNjAsImp0aSI6InI2VklQYlJkWXRscFFjU2EiLCJzdWIiOjQsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.pd5x0pBsl9vdZaKPl2QMh_9WKRPNv2r5sFDjAgW5VTE'
-            ]);
-
-            $response->assertStatus(401)->assertJson(['message' => 'Invalid Authorization Token']);
         }
     }
 }
