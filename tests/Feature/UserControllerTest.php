@@ -107,42 +107,42 @@ class UserControllerTest extends TestCase
         $response->assertStatus(402)->assertJson(['message' => 'Wrong Password']);
     }
 
-    /**
-     * Test for Successfull Logout
-     * Logout a user using the token generated at login
-     * 
-     * @test
-     */
-    public function successfulLogoutTest()
-    { {
-            $response = $this->withHeaders([
-                'Content-Type' => 'Application/json',
-            ])->json('POST', '/api/logout', [
-                "token" => self::$token
-            ]);
+    // /**
+    //  * Test for Successfull Logout
+    //  * Logout a user using the token generated at login
+    //  * 
+    //  * @test
+    //  */
+    // public function successfulLogoutTest()
+    // { {
+    //         $response = $this->withHeaders([
+    //             'Content-Type' => 'Application/json',
+    //         ])->json('POST', '/api/logout', [
+    //             "token" => self::$token
+    //         ]);
 
-            $response->assertStatus(200)->assertJson(['message' => 'User Successfully Logged Out']);
-        }
-    }
+    //         $response->assertStatus(200)->assertJson(['message' => 'User Successfully Logged Out']);
+    //     }
+    // }
 
-    /**
-     * Test for unSuccessfull Logout
-     * Logout a user using the token generated at login
-     * Passing the wrong token for this test
-     * 
-     * @test
-     */
-    public function unsuccessfulLogoutTest()
-    { {
-            $response = $this->withHeaders([
-                'Content-Type' => 'Application/json',
-            ])->json('POST', '/api/logout', [
-                "token" => self::$token
-            ]);
+    // /**
+    //  * Test for unSuccessfull Logout
+    //  * Logout a user using the token generated at login
+    //  * Passing the wrong token for this test
+    //  * 
+    //  * @test
+    //  */
+    // public function unsuccessfulLogoutTest()
+    // { {
+    //         $response = $this->withHeaders([
+    //             'Content-Type' => 'Application/json',
+    //         ])->json('POST', '/api/logout', [
+    //             "token" => self::$token
+    //         ]);
 
-            $response->assertStatus(401)->assertJson(['message' => 'Invalid Authorization Token']);
-        }
-    }
+    //         $response->assertStatus(401)->assertJson(['message' => 'Invalid Authorization Token']);
+    //     }
+    // }
 
     /**
      * Test for Successfull Forgot Password
