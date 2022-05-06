@@ -29,6 +29,12 @@ Route::group(['middleware' => 'api'], function () {
 
     Route::post('forgotpassword', [ForgotPasswordController::class, 'forgotPassword']);
     Route::post('resetpassword', [ForgotPasswordController::class, 'resetPassword']);
+
+    Route::post('addbook', [BookController::class, 'addBook']);
+    Route::post('updatebook', [BookController::class, 'updateBookByBookId']);
+    Route::post('addquantity', [BookController::class, 'addQuantityToExistingBook']);
+    Route::post('deletebook', [BookController::class, 'deleteBookByBookId']);
+    Route::get('getallbooks', [BookController::class, 'getAllBooks']);
 });
 
 Route::group(['middleware' => ['jwt.verify']], function () {
