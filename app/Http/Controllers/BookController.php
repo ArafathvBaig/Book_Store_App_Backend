@@ -26,11 +26,10 @@ class BookController extends Controller
      *          mediaType="multipart/form-data",
      *          @OA\Schema(
      *              type="object",
-     *              required={"name","description","author","image", "Price", "quantity"},
+     *              required={"name","description","author","Price","quantity"},
      *              @OA\Property(property="name", type="string"),
      *              @OA\Property(property="description", type="string"),
      *              @OA\Property(property="author", type="string"),
-     *              @OA\Property(property="image", type="file"),
      *              @OA\Property(property="price", type="decimal"),
      *              @OA\Property(property="quantity", type="integer"),
      *          ),
@@ -39,6 +38,7 @@ class BookController extends Controller
      *  @OA\Response(response=201, description="Book Added Successfully"),
      *  @OA\Response(response=401, description="Invalid Authorization Token"),
      *  @OA\Response(response=404, description="User Is Not a Admin"),
+     *  @OA\Response(response=406, description="Invalid Price Input"),
      *  @OA\Response(response=409, description="Book Already Exits in BookStore"),
      *  security = {
      *      { "Bearer" : {} }
@@ -81,7 +81,7 @@ class BookController extends Controller
                     throw new BookStoreException('Book Already Exits in BookStore', 409);
                 }
                 if ($request->price <= 0) {
-                    throw new BookStoreException('Invalid price Input', 406);
+                    throw new BookStoreException('Invalid Price Input', 406);
                 }
                 if ($request->quantity <= 0) {
                     throw new BookStoreException('Invalid Quantity Input', 406);
@@ -116,19 +116,20 @@ class BookController extends Controller
      *          mediaType="multipart/form-data",
      *          @OA\Schema(
      *              type="object",
-     *              required={"id","name","description","author","image", "Price"},
+     *              required={"id","name","description","author","Price","quantity"},
      *              @OA\Property(property="id", type="integer"),
      *              @OA\Property(property="name", type="string"),
      *              @OA\Property(property="description", type="string"),
      *              @OA\Property(property="author", type="string"),
-     *              @OA\Property(property="image", type="file"),
      *              @OA\Property(property="price", type="decimal"),
+     *              @OA\Property(property="quantity", type="integer"),
      *          ),
      *      ),
      *  ),
      *  @OA\Response(response=201, description="Book Updated Successfully"),
      *  @OA\Response(response=401, description="Invalid Authorization Token"),
      *  @OA\Response(response=404, description="Book Not Found"),
+     *  @OA\Response(response=406, description="Invalid Price Input"),
      *  @OA\Response(response=409, description="Book Already Exits in BookStore"),
      *  security = {
      *      { "Bearer" : {} }
@@ -182,7 +183,7 @@ class BookController extends Controller
                 throw new BookStoreException('Book Already Exits in BookStore', 409);
             }
             if ($request->price <= 0) {
-                throw new BookStoreException('Invalid price Input', 406);
+                throw new BookStoreException('Invalid Price Input', 406);
             }
             if ($request->quantity <= 0) {
                 throw new BookStoreException('Invalid Quantity Input', 406);
@@ -192,7 +193,7 @@ class BookController extends Controller
             if ($book) {
                 Log::info('Book Updated Successfully', ['admin_id' => $bookDetails->user_id]);
                 return response()->json([
-                    'message' => 'Book Updated Sucessfully'
+                    'message' => 'Book Updated Successfully'
                 ], 201);
             }
         } catch (BookStoreException $exception) {
@@ -222,6 +223,7 @@ class BookController extends Controller
      *  ),
      *  @OA\Response(response=201, description="Book Quantity Added Successfully"),
      *  @OA\Response(response=401, description="Invalid Authorization Token"),
+     *  @OA\Response(response=406, description="Invalid Quantity Input"),
      *  @OA\Response(response=404, description="Book Not Found"),
      *  security = {
      *      { "Bearer" : {} }
@@ -296,7 +298,6 @@ class BookController extends Controller
      *      ),
      *  ),
      *  @OA\Response(response=200, description="Book Deleted Sucessfully"),
-     *  @OA\Response(response=202, description="File Image Not Deleted"),
      *  @OA\Response(response=401, description="Invalid Authorization Token"),
      *  @OA\Response(response=404, description="Book Not Found"),
      *  security = {
