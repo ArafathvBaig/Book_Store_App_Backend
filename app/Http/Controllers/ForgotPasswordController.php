@@ -17,7 +17,7 @@ class ForgotPasswordController extends Controller
 {
     /**
      * @OA\Post(
-     *  path="/api/forgotPassword",
+     *  path="/api/forgotpassword",
      *  summary="Forgot Password",
      *  description="Forgot Password for an user",
      *  @OA\RequestBody(
@@ -83,7 +83,7 @@ class ForgotPasswordController extends Controller
 
     /**
      * @OA\Post(
-     *  path="/api/resetPassword",
+     *  path="/api/resetpassword",
      *  summary="Reset User Password",
      *  description="Reset User Password using the token sent to the mail",
      *  @OA\RequestBody(

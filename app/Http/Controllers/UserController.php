@@ -134,7 +134,7 @@ class UserController extends Controller
             }
 
             //Request is validated
-            $user = User::getUserByEmail($request->email);
+            $user = User::getUserByEmail($request->input('email'));
             if (!$user) {
                 Log::error('Not a Registered Email');
                 throw new BookStoreException('Not a Registered Email', 404);

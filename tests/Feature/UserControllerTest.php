@@ -12,14 +12,14 @@ class UserControllerTest extends TestCase
     protected static $token;
     public static function setUpBeforeClass(): void
     {
-        self::$reset = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTY1MTQzOTEyMiwiZXhwIjoxNjUxNDQyNzIyLCJuYmYiOjE2NTE0MzkxMjIsImp0aSI6InlGQjB4cEN1d054NTI2NzAiLCJzdWIiOjMsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.Fq5FATzYTv_IktXgvLUZwKT_Piu19gGCS0fYmHjnGZ0";
-        self::$token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTY1MTQzNjM2MSwiZXhwIjoxNjUxNDM5OTYxLCJuYmYiOjE2NTE0MzYzNjEsImp0aSI6IlB1dkhuVHNnbEdhUDUxMW0iLCJzdWIiOjEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.mHb991Evkvds3Hikda3XNfe1cZWf4-onuZL8TInVQ8M";
+        self::$reset = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3RcL2FwaVwvZm9yZ290cGFzc3dvcmQiLCJpYXQiOjE2NTE3NzQ5MDgsImV4cCI6MTY1MTc3ODUwOCwibmJmIjoxNjUxNzc0OTA4LCJqdGkiOiJ0T0Q5ajZzMGRheGoyYWd6Iiwic3ViIjozLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.JzPDC8gyz72e-SwvBjPL83KUmtI9IYO6HBPWOGIW5gw";
+        self::$token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTY1MTcyNzcwMCwiZXhwIjoxNjUxNzMxMzAwLCJuYmYiOjE2NTE3Mjc3MDAsImp0aSI6Ikw4NVFZS1pxcHp0a1RCOFAiLCJzdWIiOjksInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.7baiMiRQse8_PLGxLUGikBiH_YYpTE2ItV0hTSfxm3s";
     }
 
     /**
      * Successfull Registration
      * This test is to check user Registered Successfully or not
-     * by using first_name, last_name, email and password as credentials
+     * by using first_name, last_name, phone_number, role, email and password as credentials
      * 
      * @test
      */
@@ -42,7 +42,7 @@ class UserControllerTest extends TestCase
 
     /**
      * Test to check the user is already registered
-     * by using first_name, last_name, email and password as credentials
+     * by using first_name, last_name, phone_number, role, email and password as credentials
      * The email used is a registered email for this test
      * 
      * @test
@@ -154,7 +154,7 @@ class UserControllerTest extends TestCase
     { {
             $response = $this->withHeaders([
                 'Content-Type' => 'Application/json',
-            ])->json('POST', '/api/forgotPassword', [
+            ])->json('POST', '/api/forgotpassword', [
                 "email" => "arafathbaig1997@gmail.com"
             ]);
 
@@ -173,7 +173,7 @@ class UserControllerTest extends TestCase
     { {
             $response = $this->withHeaders([
                 'Content-Type' => 'Application/json',
-            ])->json('POST', '/api/forgotPassword', [
+            ])->json('POST', '/api/forgotpassword', [
                 "email" => "arafathbaig123@gmail.com"
             ]);
 
@@ -192,13 +192,13 @@ class UserControllerTest extends TestCase
     { {
             $response = $this->withHeaders([
                 'Content-Type' => 'Application/json',
-            ])->json('POST', '/api/resetPassword', [
+            ])->json('POST', '/api/resetpassword', [
                 "new_password" => "arafathbaig1997",
                 "password_confirmation" => "arafathbaig1997",
                 "token" => self::$reset
             ]);
 
-            $response->assertStatus(201)->assertJson(['message' => 'Password Reset Successful']);
+            $response->assertStatus(200)->assertJson(['message' => 'Password Reset Successful']);
         }
     }
 
@@ -214,13 +214,13 @@ class UserControllerTest extends TestCase
     { {
             $response = $this->withHeaders([
                 'Content-Type' => 'Application/json',
-            ])->json('POST', '/api/resetPassword', [
+            ])->json('POST', '/api/resetpassword', [
                 "new_password" => "arafath1234",
                 "password_confirmation" => "arafath1234",
                 "token" => self::$token
             ]);
 
-            $response->assertStatus(400)->assertJson(['message' => 'Invalid Authorization Token']);
+            $response->assertStatus(401)->assertJson(['message' => 'Invalid Authorization Token']);
         }
     }
 }

@@ -88,6 +88,12 @@ class User extends Authenticatable implements JWTSubject
         return $user;
     }
 
+    public static function checkAdminUser($currentUserId)
+    {
+        $user = User::where('role', 'admin')->where('id', $currentUserId)->get();
+        return $user;
+    }
+
     /**
      * Function to get user details by email
      * Passing the email as parameter
@@ -140,5 +146,10 @@ class User extends Authenticatable implements JWTSubject
     public function getFirstNameAttribute($value)
     {
         return 'Mr/s. ' . ucfirst($value);
+    }
+
+    public function books()
+    {
+        return $this->hasMany('App\Models\Book');
     }
 }
