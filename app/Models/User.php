@@ -94,6 +94,12 @@ class User extends Authenticatable implements JWTSubject
         return $user;
     }
 
+    public static function checkUser($currentUserId)
+    {
+        $user = User::where('role', 'user')->where('id', $currentUserId)->first();
+        return $user;
+    }
+
     /**
      * Function to get user details by email
      * Passing the email as parameter
@@ -151,5 +157,9 @@ class User extends Authenticatable implements JWTSubject
     public function books()
     {
         return $this->hasMany('App\Models\Book');
+    }
+    public function carts()
+    {
+        return $this->hasMany('App\Models\Cart');
     }
 }

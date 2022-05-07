@@ -17,7 +17,8 @@ class Book extends Model
         'author',
         //'image',
         'Price',
-        'quantity'
+        'quantity',
+        'user_id'
     ];
 
     public static function addNewBook($request, $currentUser)
@@ -46,9 +47,9 @@ class Book extends Model
         return $book;
     }
 
-    public static function addQuantity($bookDetails, $request)
+    public static function addQuantity($bookDetails, $quantity)
     {
-        $bookDetails->quantity += $request->quantity;
+        $bookDetails->quantity += $quantity;
         $bookDetails->save();
 
         return $bookDetails;
@@ -63,6 +64,12 @@ class Book extends Model
     public static function getBookByIdandUserId($bookId, $userId)
     {
         $book = Book::where('id', $bookId)->where('user_id', $userId)->first();
+        return $book;
+    }
+
+    public static function getBookById($bookId)
+    {
+        $book = Book::where('id', $bookId)->first();
         return $book;
     }
 

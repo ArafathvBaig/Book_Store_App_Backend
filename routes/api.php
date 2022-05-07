@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\AddressController;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Password;
 
 /*
@@ -35,6 +37,11 @@ Route::group(['middleware' => 'api'], function () {
     Route::post('addquantity', [BookController::class, 'addQuantityToExistingBook']);
     Route::post('deletebook', [BookController::class, 'deleteBookByBookId']);
     Route::get('getallbooks', [BookController::class, 'getAllBooks']);
+
+    Route::post('addbooktocart', [CartController::class, 'addBookToCart']);
+    Route::post('updatecart', [CartController::class, 'updateCartById']);
+    Route::post('deletecart', [CartController::class, 'deleteCartById']);
+    Route::get('getallcartbooksofuser', [CartController::class, 'getAllCartBooksOfUser']);
 });
 
 Route::group(['middleware' => ['jwt.verify']], function () {

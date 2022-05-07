@@ -45,10 +45,9 @@ class BookController extends Controller
      *  }
      * )
      * 
-     * Function add a new book with proper name, description, author, image
-     * image will be stored in aws S3 bucket and bucket will generate
-     * an url and that urlwill be stored in mysql database and admin bearer token
-     * must be passed because only admin can add or remove books
+     * Function to add a new book,
+     * taking all credentials i.e name, description, author, price, quantity
+     * and validating the admin user and add the book
      * 
      * @return \Illuminate\Http\JsonResponse
      */
@@ -60,7 +59,7 @@ class BookController extends Controller
                 'description' => 'required|string|min:5|max:1000',
                 'author' => 'required|string|min:5|max:50',
                 // 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,tiff|max:2048',
-                'price' => 'required|integer',
+                'price' => 'required',
                 'quantity' => 'required|integer'
             ]);
 
@@ -90,7 +89,7 @@ class BookController extends Controller
                 Cache::remember('books', 3600, function () {
                     return DB::table('books')->get();
                 });
-                Log::info('Book Added Successfully', ['AdminID' => $book->user_id]);
+                Log::info('Book Added Successfully', ['AdminID' => $currentUser->id]);
                 return response()->json([
                     'message' => 'Book Added Successfully'
                 ], 201);
@@ -103,7 +102,6 @@ class BookController extends Controller
             ], $exception->statusCode());
         }
     }
-
 
     /**
      * @OA\Post(
@@ -136,10 +134,10 @@ class BookController extends Controller
      *  }
      * )
      * 
-     * Function Update the existing book with  proper name, description, author, image
-     * image will be stored in aws S3 bucket and bucket will generate
-     * a url and that urlwill be stored in mysql database and admin bearer token
-     * must be passed because only admin can add or remove books
+     * Function to update an existing book by its id,
+     * taking all the credentials to update i.e id, name, description,
+     * author, price, quantity and validating the admin user authentication token
+     * and update the book if belongs to that user
      * 
      * @return \Illuminate\Http\JsonResponse
      */
@@ -191,7 +189,7 @@ class BookController extends Controller
             $book = Book::updateBook($request, $bookData);
             Cache::forget('books');
             if ($book) {
-                Log::info('Book Updated Successfully', ['admin_id' => $bookDetails->user_id]);
+                Log::info('Book Updated Successfully', ['AdminID' => $currentUser->id]);
                 return response()->json([
                     'message' => 'Book Updated Successfully'
                 ], 201);
@@ -202,7 +200,6 @@ class BookController extends Controller
             ], $exception->statusCode());
         }
     }
-
 
     /**
      * @OA\Post(
@@ -230,9 +227,9 @@ class BookController extends Controller
      *  }
      * )
      * 
-     * Function takes perticular Bookid and a Quantity value and then take input
-     * valid Authentication token as an input and fetch the book stock in the book store
-     * and performs addquantity operation on that perticular Bookid 
+     * Function to add quantity to an existing book,
+     * taking id and quantity as credentials,
+     * authenticating the token and validate user is Admin or not
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -266,7 +263,7 @@ class BookController extends Controller
             if ($request->quantity <= 0) {
                 throw new BookStoreException('Invalid Quantity Input', 406);
             }
-            $book = Book::addQuantity($bookDetails, $request);
+            $book = Book::addQuantity($bookDetails, $request->quantity);
             Cache::forget('books');
             Log::info('Book Quantity Added Successfully');
             if ($book) {
@@ -305,9 +302,9 @@ class BookController extends Controller
      *  }
      * )
      * 
-     * Function takes perticular Bookid and a valid Authentication token as an input
-     * and fetch the book in the bookstore database and performs delete operation on
-     * on that perticular Bookid
+     * Function to delete book by its id,
+     * passing the id and validating the admin user and 
+     * delete the book if the book belongs to that user
      * 
      * @return \Illuminate\Http\JsonResponse
      */
@@ -341,7 +338,7 @@ class BookController extends Controller
             }
             // Book::deleteBookImage($bookDetails);
             if ($bookDetails->delete()) {
-                Log::info('Book Deleted Successfully', ['user_id' => $currentUser->id, 'book_id' => $request->id]);
+                Log::info('Book Deleted Successfully', ['AdminID' => $currentUser->id, 'BookID' => $request->id]);
                 Cache::forget('books');
                 return response()->json([
                     'message' => 'Book Deleted Sucessfully'
@@ -353,7 +350,6 @@ class BookController extends Controller
             ], $exception->statusCode());
         }
     }
-
 
     /**
      * @OA\Get(

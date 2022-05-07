@@ -248,6 +248,184 @@
                 }
             }
         },
+        "/api/addbooktocart": {
+            "post": {
+                "summary": "Add Book to cart",
+                "description": "User Can Add Book to cart ",
+                "operationId": "0871187459e1d862f6e78726f8ffa871",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "book_id"
+                                ],
+                                "properties": {
+                                    "book_id": {
+                                        "type": "integer"
+                                    },
+                                    "book_quantity": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Book Added to Cart Successfully"
+                    },
+                    "102": {
+                        "description": "Book Not Added to Cart"
+                    },
+                    "401": {
+                        "description": "Invalid Authorization Token"
+                    },
+                    "404": {
+                        "description": "Book Not Found"
+                    },
+                    "406": {
+                        "description": "Quantity Cannot be < 0 or > Quantity in Store"
+                    },
+                    "409": {
+                        "description": "Book Already In Cart"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/updatecart": {
+            "post": {
+                "summary": "update the quantity in cart",
+                "description": " Update cart ",
+                "operationId": "a230f49ce9dec86895372da3011434d8",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "id",
+                                    "book_quantity"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "book_quantity": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Cart Updated Successfully"
+                    },
+                    "102": {
+                        "description": "Cart Not Updated"
+                    },
+                    "401": {
+                        "description": "Invalid Authorization Token"
+                    },
+                    "406": {
+                        "description": "Quantity Cannot be < 0 or > Quantity in Store"
+                    },
+                    "404": {
+                        "description": "Cart Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/deletecart": {
+            "post": {
+                "summary": "Delete the book from cart",
+                "description": " Delete cart ",
+                "operationId": "ef642ed51853be0a6b8508348962d71e",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Book Deleted Sucessfully from Cart"
+                    },
+                    "102": {
+                        "description": "Cart Not Deleted"
+                    },
+                    "401": {
+                        "description": "Invalid Authorization Token"
+                    },
+                    "404": {
+                        "description": "Cart Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/getallcartbooksofuser": {
+            "get": {
+                "summary": "Get All Books Present in Cart",
+                "description": " Get All Books Present in Cart ",
+                "operationId": "053990dbf9ac584c54ccd44ff9f95fe9",
+                "requestBody": {},
+                "responses": {
+                    "200": {
+                        "description": "Books Present in Cart::"
+                    },
+                    "404": {
+                        "description": "Book Not Found"
+                    },
+                    "401": {
+                        "description": "Invalid Authorization Token"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/api/forgotpassword": {
             "post": {
                 "summary": "Forgot Password",
