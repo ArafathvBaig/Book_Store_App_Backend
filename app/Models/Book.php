@@ -73,6 +73,27 @@ class Book extends Model
         return $book;
     }
 
+    public static function searchBook($searchKey)
+    {
+        $userbooks = Book::select('books.id', 'books.name', 'books.description', 'books.author', 'books.price', 'books.quantity')
+        ->Where('books.name', 'like', '%' . $searchKey . '%')
+        ->orWhere('books.author', 'like', '%' . $searchKey . '%')
+        ->orWhere('books.description', 'like', '%' . $searchKey . '%')
+        ->get();
+
+        return $userbooks;
+    }
+
+    public static function ascendingOrder()
+    {
+        return Book::orderBy('price')->paginate(4);
+    }
+
+    public static function descendingOrder()
+    {
+        return Book::orderBy('price', 'desc')->paginate(4);
+    }
+    
     public function user()
     {
         return $this->belongsTo(User::class);

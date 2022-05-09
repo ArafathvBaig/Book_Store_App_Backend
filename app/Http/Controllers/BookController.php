@@ -388,4 +388,171 @@ class BookController extends Controller
             ], $exception->statusCode());
         }
     }
+
+    /** 
+     * @OA\Post(
+     *  path="/api/searchbookbykey",
+     *  summary="search the book from BookStoreApp",
+     *  description=" Search Book ",
+     *  @OA\RequestBody(
+     *      @OA\JsonContent(),
+     *      @OA\MediaType(
+     *          mediaType="multipart/form-data",
+     *          @OA\Schema(
+     *              type="object",
+     *              required={"search_book"},
+     *              @OA\Property(property="search_book", type="string"),
+     *          ),
+     *      ),
+     *  ),
+     *  @OA\Response(response=200, description="Book Searched Successfully"),
+     *  @OA\Response(response=404, description="Book Not Found"),
+     *  @OA\Response(response=401, description="Invalid Authorization Token"),
+     *  security = {
+     *      { "Bearer" : {} }
+     *  }
+     * )
+     * 
+     * Function to search book by a key
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function searchBookByKey(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'search_book' => 'required|string'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json($validator->errors()->toJson(), 400);
+            }
+
+            $searchKey = $request->input('search_book');
+            $currentUser = JWTAuth::parseToken()->authenticate();
+            if ($currentUser) {
+                $user = User::checkUser($currentUser->id);
+                if ($user) {
+                    $userbooks = Book::searchBook($searchKey);
+                    if ($userbooks) {
+                        Log::info('Book Searched Successfully');
+                        return response()->json([
+                            'message' => 'Book Searched Successfully',
+                            'books' => $userbooks
+                        ], 200);
+                    }
+                    Log::error('Book Not Found');
+                    throw new BookStoreException('Book Not Found', 404);
+                }
+                Log::error('You are Not a User');
+                throw new BookStoreException('You are Not a User', 404);
+            }
+            Log::error('Invalid Authorization Token');
+            throw new BookStoreException('Invalid Authorization Token', 401);
+        } catch (BookStoreException $exception) {
+            return response()->json([
+                'message' => $exception->message()
+            ], $exception->statusCode());
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *  path="/api/sortbookbypricelowtohigh",
+     *  summary="Sort Book by Price Low to High",
+     *  description="Sort Book Ascending Order",
+     *  @OA\RequestBody(),
+     *  @OA\Response(response=200, description="Book Sorted Successfully in Ascending Order"),
+     *  @OA\Response(response=401, description="Invalid Authorization Token"),
+     *  @OA\Response(response=404, description="Book Not Found"),
+     *  security = {
+     *      { "Bearer" : {} }
+     *  }
+     * )
+     * 
+     * Function to sort book by price,
+     * Low to High
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function sortBookByPriceLowToHigh()
+    {
+        try {
+            $currentUser = JWTAuth::parseToken()->authenticate();
+            if ($currentUser) {
+                $user = User::checkUser($currentUser->id);
+                if ($user) {
+                    //$bookDetails = Book::orderby('price')->paginate(4);
+                    $bookDetails = Book::ascendingOrder();
+                    if ($bookDetails) {
+                        Log::info('Books Sorted Successfully in Ascending Order');
+                        return response()->json([
+                            'message' => 'Book Sorted Successfully in Ascending Order',
+                            'books' => $bookDetails
+                        ], 200);
+                    }
+                    Log::error('Book Not Found');
+                    throw new BookStoreException('Book Not Found', 404);
+                }
+                Log::error('You are Not a User');
+                throw new BookStoreException('You are Not a User', 404);
+            }
+            Log::error('Invalid Authorization Token');
+            throw new BookStoreException('Invalid Authorization Token', 401);
+        } catch (BookStoreException $exception) {
+            return response()->json([
+                'message' => $exception->message()
+            ], $exception->statusCode());
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *  path="/api/sortbookbypricehightolow",
+     *  summary="Sort Book by Price High to Low",
+     *  description="Sort Book Descending Order",
+     *  @OA\RequestBody(),
+     *  @OA\Response(response=200, description="Book Sorted Successfully in Descending Order"),
+     *  @OA\Response(response=401, description="Invalid Authorization Token"),
+     *  @OA\Response(response=404, description="Book Not Found"),
+     *  security = {
+     *      { "Bearer" : {} }
+     *  }
+     * )
+     * 
+     * Function to sort book by price,
+     * High to Low
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function sortBookByPriceHighToLow()
+    {
+        try {
+            $currentUser = JWTAuth::parseToken()->authenticate();
+            if ($currentUser) {
+                $user = User::checkUser($currentUser->id);
+                if ($user) {
+                    //$bookDetails = Book::orderby('price', 'desc')->paginate(4);
+                    $bookDetails = Book::descendingOrder();
+                    if ($bookDetails) {
+                        Log::info('Books Sorted Successfully in Descending Order');
+                        return response()->json([
+                            'message' => 'Book Sorted Successfully in Descending Order',
+                            'books' => $bookDetails
+                        ], 200);
+                    }
+                    Log::error('Book Not Found');
+                    throw new BookStoreException('Book Not Found', 404);
+                }
+                Log::error('You are Not a User');
+                throw new BookStoreException('You are Not a User', 404);
+            }
+            Log::error('Invalid Authorization Token');
+            throw new BookStoreException('Invalid Authorization Token', 401);
+        } catch (BookStoreException $exception) {
+            return response()->json([
+                'message' => $exception->message()
+            ], $exception->statusCode());
+        }
+    }
 }

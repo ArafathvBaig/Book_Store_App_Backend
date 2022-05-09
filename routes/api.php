@@ -37,6 +37,10 @@ Route::group(['middleware' => 'api'], function () {
     Route::post('addquantity', [BookController::class, 'addQuantityToExistingBook']);
     Route::post('deletebook', [BookController::class, 'deleteBookByBookId']);
     Route::get('getallbooks', [BookController::class, 'getAllBooks']);
+    Route::post('searchbookbykey', [BookController::class, 'searchBookByKey']);
+    Route::get('sortbookbypricelowtohigh', [BookController::class, 'sortBookByPriceLowToHigh']);
+    Route::get('sortbookbypricehightolow', [BookController::class, 'sortBookByPriceHighToLow']);
+
 
     Route::post('addbooktocart', [CartController::class, 'addBookToCart']);
     Route::post('updatecart', [CartController::class, 'updateCartById']);
