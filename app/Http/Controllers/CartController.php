@@ -56,7 +56,7 @@ class CartController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'book_id' => 'required|integer',
-                'book_quantity' => 'integer'
+                'book_quantity' => ''
             ]);
 
             if ($validator->fails()) {
@@ -69,7 +69,8 @@ class CartController extends Controller
                 if ($user) {
                     $bookData = Book::getBookById($request->book_id);
                     if ($bookData) {
-                        if ($request->book_quantity >0 && $request->book_quantity <= $bookData->quantity) {
+                        if (($request->book_quantity > 0 && $request->book_quantity <= $bookData->quantity) 
+                        || $request->book_quantity == '') {
                             $book = Cart::getCartedBook($request->book_id, $currentUser->id);
                             if (!$book) {
                                 $cart = Cart::addBookToYourCart($request, $currentUser);

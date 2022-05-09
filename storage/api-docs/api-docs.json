@@ -5,6 +5,207 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/adduseraddress": {
+            "post": {
+                "summary": "Add Address",
+                "description": "User Can Add Address ",
+                "operationId": "8b3713f37e163a36d1c651451d70a29c",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "address",
+                                    "landmark",
+                                    "city",
+                                    "state",
+                                    "pincode"
+                                ],
+                                "properties": {
+                                    "address": {
+                                        "type": "string"
+                                    },
+                                    "landmark": {
+                                        "type": "string"
+                                    },
+                                    "city": {
+                                        "type": "string"
+                                    },
+                                    "state": {
+                                        "type": "string"
+                                    },
+                                    "pincode": {
+                                        "type": "integer"
+                                    },
+                                    "address_type": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Address Added Successfully"
+                    },
+                    "401": {
+                        "description": "Invalid Authorization Token"
+                    },
+                    "404": {
+                        "description": "You are Not a User"
+                    },
+                    "406": {
+                        "description": "Invalid Address Type"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/updateuseraddress": {
+            "post": {
+                "summary": "Update Address",
+                "description": "User Can Update Address ",
+                "operationId": "9dfc718894dab840cd4e3ed17ab868fe",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "id",
+                                    "address",
+                                    "landmark",
+                                    "city",
+                                    "state",
+                                    "pincode"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "address": {
+                                        "type": "string"
+                                    },
+                                    "landmark": {
+                                        "type": "string"
+                                    },
+                                    "city": {
+                                        "type": "string"
+                                    },
+                                    "state": {
+                                        "type": "string"
+                                    },
+                                    "pincode": {
+                                        "type": "integer"
+                                    },
+                                    "address_type": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Address Updated Successfully"
+                    },
+                    "401": {
+                        "description": "Invalid Authorization Token"
+                    },
+                    "404": {
+                        "description": "Address Not Found, Add Address First"
+                    },
+                    "406": {
+                        "description": "Invalid Address Type"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/deleteuseraddress": {
+            "post": {
+                "summary": "Delete Address",
+                "description": " Delete Address ",
+                "operationId": "1b56719f7961a072bc148a29a98d248e",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Address Deleted Successfully"
+                    },
+                    "401": {
+                        "description": "Invalid Authorization Token"
+                    },
+                    "404": {
+                        "description": "Address Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/getuseraddresses": {
+            "get": {
+                "summary": "Get addresses ",
+                "description": " Get User Addresses ",
+                "operationId": "5ee551cd541b8f03c67e36788fee8ebb",
+                "requestBody": {},
+                "responses": {
+                    "200": {
+                        "description": "Addresses Fetched Successfully"
+                    },
+                    "404": {
+                        "description": "Addresses Not Found"
+                    },
+                    "401": {
+                        "description": "Invalid Authorization Token"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/api/addbook": {
             "post": {
                 "summary": "Add a new Book",

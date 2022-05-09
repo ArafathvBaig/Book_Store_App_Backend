@@ -42,6 +42,11 @@ Route::group(['middleware' => 'api'], function () {
     Route::post('updatecart', [CartController::class, 'updateCartById']);
     Route::post('deletecart', [CartController::class, 'deleteCartById']);
     Route::get('getallcartbooksofuser', [CartController::class, 'getAllCartBooksOfUser']);
+
+    Route::post('adduseraddress', [AddressController::class, 'addUserAddress']);
+    Route::post('updateuseraddress', [AddressController::class, 'updateAddress']);
+    Route::post('deleteuseraddress', [AddressController::class, 'deleteAddress']);
+    Route::get('getuseraddresses', [AddressController::class, 'getAddress']);
 });
 
 Route::group(['middleware' => ['jwt.verify']], function () {
