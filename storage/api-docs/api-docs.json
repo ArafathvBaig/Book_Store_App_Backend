@@ -449,6 +449,97 @@
                 }
             }
         },
+        "/api/searchbookbykey": {
+            "post": {
+                "summary": "search the book from BookStoreApp",
+                "description": " Search Book ",
+                "operationId": "cf5808d52ffb7aee7bb503f442cacf44",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "search_book"
+                                ],
+                                "properties": {
+                                    "search_book": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Book Searched Successfully"
+                    },
+                    "404": {
+                        "description": "Book Not Found"
+                    },
+                    "401": {
+                        "description": "Invalid Authorization Token"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/sortbookbypricelowtohigh": {
+            "get": {
+                "summary": "Sort Book by Price Low to High",
+                "description": "Sort Book Ascending Order",
+                "operationId": "2888d3d67e7316d22dc8243967216a3a",
+                "requestBody": {},
+                "responses": {
+                    "200": {
+                        "description": "Book Sorted Successfully in Ascending Order"
+                    },
+                    "401": {
+                        "description": "Invalid Authorization Token"
+                    },
+                    "404": {
+                        "description": "Book Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/sortbookbypricehightolow": {
+            "get": {
+                "summary": "Sort Book by Price High to Low",
+                "description": "Sort Book Descending Order",
+                "operationId": "19284ada4de01e958abac4048e512f16",
+                "requestBody": {},
+                "responses": {
+                    "200": {
+                        "description": "Book Sorted Successfully in Descending Order"
+                    },
+                    "401": {
+                        "description": "Invalid Authorization Token"
+                    },
+                    "404": {
+                        "description": "Book Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/api/addbooktocart": {
             "post": {
                 "summary": "Add Book to cart",
@@ -697,6 +788,105 @@
                     },
                     "200": {
                         "description": "Password Reset Successful"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/placeorder": {
+            "post": {
+                "summary": "Place  Order",
+                "description": "Place a Order",
+                "operationId": "fd7520457d3033bbf590aee86f87920d",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "address_id",
+                                    "cart_id"
+                                ],
+                                "properties": {
+                                    "address_id": {
+                                        "type": "integer"
+                                    },
+                                    "cart_id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Order Placed Successfully"
+                    },
+                    "404": {
+                        "description": "Address Not Found"
+                    },
+                    "401": {
+                        "description": "Invalid Authorization Token"
+                    },
+                    "409": {
+                        "description": "Already Placed an Order"
+                    },
+                    "406": {
+                        "description": "Book Stock is Not Available in The Store"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/cancelorder": {
+            "post": {
+                "summary": "Cancel  Order",
+                "description": "Cancel a Order",
+                "operationId": "7a4a8dd9e0251e52b9c4b0d65ce1d427",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "order_id"
+                                ],
+                                "properties": {
+                                    "order_id": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Order Cancelled Successfully"
+                    },
+                    "404": {
+                        "description": "Order Not Found"
+                    },
+                    "401": {
+                        "description": "Invalid Authorization Token"
+                    },
+                    "406": {
+                        "description": "Invalid OrderID"
                     }
                 },
                 "security": [

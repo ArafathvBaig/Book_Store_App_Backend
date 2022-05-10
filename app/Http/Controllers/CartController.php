@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
+use function PHPUnit\Framework\isEmpty;
+
 class CartController extends Controller
 {
     /**
@@ -291,16 +293,16 @@ class CartController extends Controller
                 $user = User::checkUser($currentUser->id);
                 if ($user) {
                     $books = Cart::getAllCartBooksOfUser($currentUser->id);
-                    if($books)
+                    if(empty($books))
                     {
-                        Log::info('All Books Presnet in Cart are Fetched Successfully');
-                        return response()->json([
-                            'message' => 'Books Present in Cart::',
-                            'Cart' => $books,
-                        ], 200);
-                    }
-                    Log::error('Book Not Found');
-                    throw new BookStoreException('Book Not Found', 404);
+                        Log::error('Book Not Found');
+                        throw new BookStoreException('Book Not Found', 404);
+                    }                    
+                    Log::info('All Books Presnet in Cart are Fetched Successfully');
+                    return response()->json([
+                        'message' => 'Books Present in Cart::',
+                        'Cart' => $books,
+                    ], 200);
                 }
                 Log::error('You are Not a User');
                 throw new BookStoreException('You are Not a User', 404);

@@ -43,7 +43,7 @@ class Cart extends Model
     public static function getAllCartBooksOfUser($userId)
     {
         $books = Cart::leftJoin('books', 'carts.book_id', '=', 'books.id')
-        ->select('books.id', 'books.name', 'books.author', 'books.description', 'books.price', 'carts.book_quantity')
+        ->select('carts.id as cartId', 'carts.book_quantity', 'books.id', 'books.name', 'books.author', 'books.description', 'books.price')
         ->where('carts.user_id', '=', $userId)->paginate(4);
 
         return $books;
