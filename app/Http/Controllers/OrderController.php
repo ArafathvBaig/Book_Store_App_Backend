@@ -192,6 +192,9 @@ class OrderController extends Controller
 							$cart = Cart::getCartByIdandUserId($order->cart_id, $currentUser->id);
 							$book = Book::getBookById($cart->book_id);
 							if ($order->delete()) {
+								$book->quantity += $cart->book_quantity;
+								$book->save();
+								
 								$delay = now()->addSeconds(5);
 								$user->notify((new SendCancelOrderDetails($order, $book, $cart, $currentUser))->delay($delay));
 

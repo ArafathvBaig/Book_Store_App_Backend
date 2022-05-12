@@ -15,6 +15,12 @@ class Cart extends Model
         'user_id'
     ];
 
+    /**
+     * Function to add items to the cart,
+     * passing all the credentials required and save them to cart
+     * 
+     * @return array
+     */
     public static function addBookToYourCart($request, $user){
         $cart = new Cart();
         $cart->user_id = $user->id;
@@ -27,6 +33,12 @@ class Cart extends Model
         return $cart;
     }
 
+    /**
+     * Function to get book from the cart by bookID and userID,
+     * passing the required credentials as parameters
+     * 
+     * @return array
+     */
     public static function getCartedBook($bookId, $userId)
     {
         $book = Cart::where('book_id', $bookId)->where('user_id', $userId)->first();
@@ -34,12 +46,24 @@ class Cart extends Model
         return $book;
     }
 
+    /**
+     * Function to get book from the cart by cartID and userID,
+     * passing the required credentials as parameters
+     * 
+     * @return array
+     */
     public static function getCartByIdandUserId($cartId, $userId){
         $cart = Cart::where('id', $cartId)->where('user_id', $userId)->first();
 
         return $cart;
     }
 
+    /**
+     * Function to get all the books from the cart of an user,
+     * passing the userID as parameters
+     * 
+     * @return array
+     */
     public static function getAllCartBooksOfUser($userId)
     {
         $books = Cart::leftJoin('books', 'carts.book_id', '=', 'books.id')

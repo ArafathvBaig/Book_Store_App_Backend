@@ -18,6 +18,10 @@ class CreateOrdersTable extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('cart_id');
             $table->unsignedInteger('address_id');
+            $table->string('book_name');
+            $table->string('book_author');
+            $table->decimal('book_price');
+            $table->unsignedInteger('book_quantity');
             $table->decimal('total_price');
             $table->string('order_id')->nullable();
             $table->foreign('cart_id')

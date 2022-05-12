@@ -20,6 +20,12 @@ class Address extends Model
         'user_id'
     ];
 
+    /**
+     * Function to add new address of a user,
+     * passing all the credentials required, as parameters
+     * 
+     * @return array
+     */
     public static function addAddressToUser($request, $currentUser)
     {
         $address = new Address();
@@ -37,6 +43,12 @@ class Address extends Model
         return $address;
     }
 
+    /**
+     * Function to update the existing address fo a user,
+     * passing all the credentials required, as parameters
+     * 
+     * @return array
+     */
     public static function updateAddressOfUser($address, $request)
     {
         $address->address = $request->address;
@@ -52,6 +64,12 @@ class Address extends Model
         return $address;
     }
 
+    /**
+     * Function to get user address by addressID and userID,
+     * passing the addressID and userID as parameters
+     * 
+     * @return array
+     */
     public static function getUserAddress($addressId, $userId)
     {
         $address = Address::where('id', $addressId)->where('user_id', $userId)->first();
@@ -59,6 +77,12 @@ class Address extends Model
         return $address;
     }
 
+    /**
+     * Function to get user addresses by userID,
+     * passing the userID as parameter
+     * 
+     * @return array
+     */
     public static function getUserAddresses($userId)
     {
         $address = Address::where('user_id', $userId)->get();

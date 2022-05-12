@@ -12,8 +12,8 @@ class BookControllerTest extends TestCase
     protected static $id;
     public static function setUpBeforeClass(): void
     {
-        self::$id = "21";
-        self::$token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTY1MTg2NzQwMywiZXhwIjoxNjUxODcxMDAzLCJuYmYiOjE2NTE4Njc0MDMsImp0aSI6IjFJeThValZ6eHZWRlpUWHEiLCJzdWIiOjQsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.SG4_kQCPaMKYMTsGxsOs3nH0LzPPH6xYnS8tYX1j3iY";
+        self::$id = "19";
+        self::$token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNjUyMzcxMTEzLCJleHAiOjE2NTIzNzQ3MTMsIm5iZiI6MTY1MjM3MTExMywianRpIjoidVlVQ2kxbkFDdGxNVFRRWiIsInN1YiI6IjUiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.tjPUxeljgs_oXpoqy1L8BlgFhqFzSjCLDY_eSc_ZsG4";
     }
 
     /**
@@ -29,15 +29,12 @@ class BookControllerTest extends TestCase
             'Content-Type' => 'Application/json',
         ])
             ->json('POST', '/api/addbook', [
-                "name" => "The Place of Illusions by Banerjee",
-                "description" => "Yet another retelling of the epic Mahabharata, 
-                            this novel has a very interesting narrator. The narrator here is Draupadi, 
-                            one of the most misunderstood and wronged characters in the original epic. 
-                            This book throws light on her perspectives and emotions and helps us view 
-                            the story from a different and more empathetic angle.",
-                "author" => "Chitra Banerjee Divakaruni",
-                "price" => "100",
-                "quantity" => "100",
+                "name" => "Harry Potter Book",
+                "description" => "A Series of Harry Potter Books has been Released.",
+                "author" => "J.K. Rowling",
+                "image" => "aaaa.jpg",
+                "price" => "699.99",
+                "quantity" => "1500",
                 "token" => self::$token
             ]);
         $response->assertStatus(201)->assertJson(['message' => 'Book Added Successfully']);
@@ -57,15 +54,12 @@ class BookControllerTest extends TestCase
             'Content-Type' => 'Application/json',
         ])
             ->json('POST', '/api/addbook', [
-                "name" => "The Place of Illusions by Banerjee",
-                "description" => "Yet another retelling of the epic Mahabharata, 
-                            this novel has a very interesting narrator. The narrator here is Draupadi, 
-                            one of the most misunderstood and wronged characters in the original epic. 
-                            This book throws light on her perspectives and emotions and helps us view 
-                            the story from a different and more empathetic angle.",
-                "author" => "Chitra Banerjee Divakaruni",
-                "price" => "100",
-                "quantity" => "100",
+                "name" => "Harry Potter",
+                "description" => "A Series of Harry Potter Books has been Released.",
+                "author" => "J.K. Rowling",
+                "image" => "aaaa.jpg",
+                "price" => "699.99",
+                "quantity" => "1500",
                 "token" => self::$token
             ]);
         $response->assertStatus(409)->assertJson(['message' => 'Book Already Exits in BookStore']);
@@ -85,15 +79,12 @@ class BookControllerTest extends TestCase
         ])
             ->json('POST', '/api/updatebook', [
                 "id" => self::$id,
-                "name" => "The Place of Illusions by Banerjee",
-                "description" => "Yet another retelling of the epic Mahabharata, 
-                            this novel has a very interesting narrator. The narrator here is Draupadi, 
-                            one of the most misunderstood and wronged characters in the original epic. 
-                            This book throws light on her perspectives and emotions and helps us view 
-                            the story from a different and more empathetic angle.",
-                "author" => "Chitra Banerjee Divakaruni",
-                "price" => "100",
-                "quantity" => "100",
+                "name" => "Harry Potter",
+                "description" => "A Series of Harry Potter Books has been Released.",
+                "author" => "J.K. Rowling",
+                "image" => "aaaa.jpg",
+                "price" => "700",
+                "quantity" => "1500",
                 "token" => self::$token
             ]);
         $response->assertStatus(201)->assertJson(['message' => 'Book Updated Successfully']);
@@ -114,15 +105,12 @@ class BookControllerTest extends TestCase
         ])
             ->json('POST', '/api/updatebook', [
                 "id" => "0",
-                "name" => "The Place of Illusions by Banerjee",
-                "description" => "Yet another retelling of the epic Mahabharata, 
-                            this novel has a very interesting narrator. The narrator here is Draupadi, 
-                            one of the most misunderstood and wronged characters in the original epic. 
-                            This book throws light on her perspectives and emotions and helps us view 
-                            the story from a different and more empathetic angle.",
-                "author" => "Chitra Banerjee Divakaruni",
-                "price" => "100",
-                "quantity" => "100",
+                "name" => "Harry Potter",
+                "description" => "A Series of Harry Potter Books has been Released.",
+                "author" => "J.K. Rowling",
+                "image" => "aaaa.jpg",
+                "price" => "700",
+                "quantity" => "1500",
                 "token" => self::$token
             ]);
         $response->assertStatus(404)->assertJson(['message' => 'Book Not Found']);
@@ -142,7 +130,7 @@ class BookControllerTest extends TestCase
         ])
             ->json('POST', '/api/addquantity', [
                 "id" => self::$id,
-                "quantity" => "20",
+                "quantity" => "100",
                 "token" => self::$token
             ]);
         $response->assertStatus(201)->assertJson(['message' => 'Book Quantity Added Successfully']);

@@ -26,10 +26,11 @@ class BookController extends Controller
      *          mediaType="multipart/form-data",
      *          @OA\Schema(
      *              type="object",
-     *              required={"name","description","author","Price","quantity"},
+     *              required={"name","description","author","image","Price","quantity"},
      *              @OA\Property(property="name", type="string"),
      *              @OA\Property(property="description", type="string"),
      *              @OA\Property(property="author", type="string"),
+     *              @OA\Property(property="image", type="file"),
      *              @OA\Property(property="price", type="decimal"),
      *              @OA\Property(property="quantity", type="integer"),
      *          ),
@@ -58,7 +59,7 @@ class BookController extends Controller
                 'name' => 'required|string|min:3|max:50',
                 'description' => 'required|string|min:5|max:1000',
                 'author' => 'required|string|min:5|max:50',
-                // 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,tiff|max:2048',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,tiff|max:2048',
                 'price' => 'required',
                 'quantity' => 'required|integer'
             ]);
@@ -114,11 +115,12 @@ class BookController extends Controller
      *          mediaType="multipart/form-data",
      *          @OA\Schema(
      *              type="object",
-     *              required={"id","name","description","author","Price","quantity"},
+     *              required={"id","name","description","author","image","Price","quantity"},
      *              @OA\Property(property="id", type="integer"),
      *              @OA\Property(property="name", type="string"),
      *              @OA\Property(property="description", type="string"),
      *              @OA\Property(property="author", type="string"),
+     *              @OA\Property(property="image", type="file"),
      *              @OA\Property(property="price", type="decimal"),
      *              @OA\Property(property="quantity", type="integer"),
      *          ),
@@ -149,7 +151,7 @@ class BookController extends Controller
                 'name' => 'required|string|min:3|max:50',
                 'description' => 'required|string|min:5|max:1000',
                 'author' => 'required|string|min:5|max:50',
-                // 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,tiff|max:2048',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,tiff|max:2048',
                 'price' => 'required',
                 'quantity' => 'required|integer'
             ]);
@@ -336,7 +338,7 @@ class BookController extends Controller
                 Log::error('Book Not Found');
                 throw new BookStoreException('Book Not Found', 404);
             }
-            // Book::deleteBookImage($bookDetails);
+            Book::deleteBookImage($bookDetails);
             if ($bookDetails->delete()) {
                 Log::info('Book Deleted Successfully', ['AdminID' => $currentUser->id, 'BookID' => $request->id]);
                 Cache::forget('books');

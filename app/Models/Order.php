@@ -15,10 +15,20 @@ class Order extends Model
         'user_id',
         'cart_id',
         'address_id',
+        'book_name',
+        'book_author',
+        'book_price',
+        'book_quantity',
         'total_price',
         'order_id'
     ];
 
+    /**
+     * Function to place new order with the credentials provided,
+     * taking user request, currentUser, book and cart as credentials
+     * 
+     * @return array
+     */
     public static function placeOrder($request, $currentUser, $book, $cart)
     {
         $total_price = $book->price * $cart->book_quantity;
@@ -26,6 +36,10 @@ class Order extends Model
         $order->user_id = $currentUser->id;
         $order->cart_id = $request->cart_id;
         $order->address_id = $request->address_id;
+        $order->book_name = $book->name;
+        $order->book_author = $book->author;
+        $order->book_price = $book->price;
+        $order->book_quantity = $cart->book_quantity;
         $order->total_price = $total_price;
         $order->order_id = $order->unique_code(9);
         $order->save();
@@ -33,6 +47,12 @@ class Order extends Model
         return $order;        
     }
 
+    /**
+     * Function to get order by cartID
+     * passing cartID as parameter
+     * 
+     * @return array
+     */
     public static function getOrder($cartId)
     {
         $order = Order::where('cart_id', $cartId)->first();
@@ -40,6 +60,12 @@ class Order extends Model
         return $order;
     }
 
+    /**
+     * Function to get order by orderID and userID
+     * passing orderID and userID as parameters
+     * 
+     * @return array
+     */
     public static function getOrderByOrderID($orderID, $userID)
     {
         $order = Order::where('order_id', $orderID)->where('user_id', $userID)->first();
@@ -53,7 +79,7 @@ class Order extends Model
      * uniqid – Generate a unique ID.
      * mt_rand – Generate a random value via the Mersenne Twister Random Number Generator.
      */
-    public function unique_code($limit = 9)
+    public function unique_code($limit)
     {
         return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $limit);
     }

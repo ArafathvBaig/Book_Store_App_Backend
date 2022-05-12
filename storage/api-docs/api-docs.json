@@ -219,6 +219,7 @@
                                     "name",
                                     "description",
                                     "author",
+                                    "image",
                                     "Price",
                                     "quantity"
                                 ],
@@ -231,6 +232,9 @@
                                     },
                                     "author": {
                                         "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "file"
                                     },
                                     "price": {
                                         "type": "decimal"
@@ -285,6 +289,7 @@
                                     "name",
                                     "description",
                                     "author",
+                                    "image",
                                     "Price",
                                     "quantity"
                                 ],
@@ -300,6 +305,9 @@
                                     },
                                     "author": {
                                         "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "file"
                                     },
                                     "price": {
                                         "type": "decimal"

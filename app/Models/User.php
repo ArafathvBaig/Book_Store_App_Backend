@@ -88,12 +88,24 @@ class User extends Authenticatable implements JWTSubject
         return $user;
     }
 
+    /**
+     * Check User, whether user or admin,
+     * using userID to check
+     * 
+     * @return array
+     */
     public static function checkAdminUser($currentUserId)
     {
         $user = User::where('role', 'admin')->where('id', $currentUserId)->first();
         return $user;
     }
 
+    /**
+     * Check User, whether user or admin
+     * using userID to check
+     * 
+     * @return array
+     */
     public static function checkUser($currentUserId)
     {
         $user = User::where('role', 'user')->where('id', $currentUserId)->first();
