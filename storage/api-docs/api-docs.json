@@ -220,7 +220,7 @@
                                     "description",
                                     "author",
                                     "image",
-                                    "Price",
+                                    "price",
                                     "quantity"
                                 ],
                                 "properties": {
@@ -290,7 +290,7 @@
                                     "description",
                                     "author",
                                     "image",
-                                    "Price",
+                                    "price",
                                     "quantity"
                                 ],
                                 "properties": {

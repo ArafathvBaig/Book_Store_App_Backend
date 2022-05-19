@@ -4,18 +4,57 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 use Tests\TestCase;
 
 class BookControllerTest extends TestCase
 {
     protected static $token;
     protected static $id;
+    protected static $image;
     public static function setUpBeforeClass(): void
     {
-        self::$id = "19";
-        self::$token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNjUyMzcxMTEzLCJleHAiOjE2NTIzNzQ3MTMsIm5iZiI6MTY1MjM3MTExMywianRpIjoidVlVQ2kxbkFDdGxNVFRRWiIsInN1YiI6IjUiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.tjPUxeljgs_oXpoqy1L8BlgFhqFzSjCLDY_eSc_ZsG4";
+        // Storage::disk('images');
+        // self::$image = UploadedFile::fake()->create('Harry Potter and the Half-Blood Prince.jpg');
+
+        // $attachment = 'C:\Users\Arafath Baig\Desktop\BRIDGE LABS\Images\Harry Potter and the Half-Blood Prince.jpg';
+        // $storagePath = Storage::disk('attachments')->path('/' . $attachment);
+        // self::$image = $storagePath;
+
+        // self::$image = "/C:/Users/Arafath Baig/Desktop/BRIDGE LABS/Images/Harry Potter and the Half-Blood Prince.jpg";
+
+        // self::$image = "Harry Potter and the Half-Blood Prince.jpg";
+
+        // self::$image = ".\public\images\Harry Potter and the Half-Blood Prince.jpg";
+
+        // self::$image = Storage::get('\public\Harry Potter and the Half-Blood Prince.jpg');
+
+        // self::$image = public_path() . "Harry Potter and the Half-Blood Prince.jpg";
+
+        Storage::fake('avatars');
+        $file = UploadedFile::fake()->image('avatar.jpg');
+        self::$image = $file->hashName();
+        self::$id = "25";
+        self::$token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNjUyNzY0OTEyLCJleHAiOjE2NTI3Njg1MTIsIm5iZiI6MTY1Mjc2NDkxMiwianRpIjoiT0NzdGZEQWtsaERhbGE0SSIsInN1YiI6IjUiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.v5J6yPh2DwWKVhS_XFqLSinFd9KV_P0fxNaaiYB_6lA";
     }
 
+    public function test_original_filename_upload()
+    {
+        $filename = 'logo.jpg';
+
+        $response = $this->post('projects', [
+            'name' => 'Some name',
+            'logo' => UploadedFile::fake()->image($filename)
+        ]);
+
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('projects', [
+            'name' => 'Some name',
+            'logo' => $filename
+        ]);
+    }
     /**
      * Successfull Add Book Test
      * This test is to Add a Book to Book Store App
@@ -32,7 +71,7 @@ class BookControllerTest extends TestCase
                 "name" => "Harry Potter Book",
                 "description" => "A Series of Harry Potter Books has been Released.",
                 "author" => "J.K. Rowling",
-                "image" => "aaaa.jpg",
+                "image" => self::$image,
                 "price" => "699.99",
                 "quantity" => "1500",
                 "token" => self::$token
@@ -57,7 +96,7 @@ class BookControllerTest extends TestCase
                 "name" => "Harry Potter",
                 "description" => "A Series of Harry Potter Books has been Released.",
                 "author" => "J.K. Rowling",
-                "image" => "aaaa.jpg",
+                "image" => self::$image,
                 "price" => "699.99",
                 "quantity" => "1500",
                 "token" => self::$token
@@ -82,7 +121,7 @@ class BookControllerTest extends TestCase
                 "name" => "Harry Potter",
                 "description" => "A Series of Harry Potter Books has been Released.",
                 "author" => "J.K. Rowling",
-                "image" => "aaaa.jpg",
+                "image" => self::$image,
                 "price" => "700",
                 "quantity" => "1500",
                 "token" => self::$token
@@ -108,7 +147,7 @@ class BookControllerTest extends TestCase
                 "name" => "Harry Potter",
                 "description" => "A Series of Harry Potter Books has been Released.",
                 "author" => "J.K. Rowling",
-                "image" => "aaaa.jpg",
+                "image" => self::$image,
                 "price" => "700",
                 "quantity" => "1500",
                 "token" => self::$token

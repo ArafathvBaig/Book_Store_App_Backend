@@ -69,7 +69,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * Creates a new user with the attributes given
      * 
-     * @return array
+     * return array
      */
     public static function createUser($request)
     {
@@ -92,7 +92,7 @@ class User extends Authenticatable implements JWTSubject
      * Check User, whether user or admin,
      * using userID to check
      * 
-     * @return array
+     * return array
      */
     public static function checkAdminUser($currentUserId)
     {
@@ -104,7 +104,7 @@ class User extends Authenticatable implements JWTSubject
      * Check User, whether user or admin
      * using userID to check
      * 
-     * @return array
+     * return array
      */
     public static function checkUser($currentUserId)
     {
@@ -116,7 +116,7 @@ class User extends Authenticatable implements JWTSubject
      * Function to get user details by email
      * Passing the email as parameter
      * 
-     * @return array
+     * return array
      */
     public static function getUserByEmail($email)
     {
@@ -128,7 +128,7 @@ class User extends Authenticatable implements JWTSubject
      * Function to Update the password with new password
      * Passing the User and the new_password as parameters
      * 
-     * @return array
+     * return array
      */
     public static function updatePassword($user, $new_password)
     {

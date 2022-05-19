@@ -24,7 +24,7 @@ class Address extends Model
      * Function to add new address of a user,
      * passing all the credentials required, as parameters
      * 
-     * @return array
+     * return array
      */
     public static function addAddressToUser($request, $currentUser)
     {
@@ -47,7 +47,7 @@ class Address extends Model
      * Function to update the existing address fo a user,
      * passing all the credentials required, as parameters
      * 
-     * @return array
+     * return array
      */
     public static function updateAddressOfUser($address, $request)
     {
@@ -68,7 +68,7 @@ class Address extends Model
      * Function to get user address by addressID and userID,
      * passing the addressID and userID as parameters
      * 
-     * @return array
+     * return array
      */
     public static function getUserAddress($addressId, $userId)
     {
@@ -81,7 +81,7 @@ class Address extends Model
      * Function to get user addresses by userID,
      * passing the userID as parameter
      * 
-     * @return array
+     * return array
      */
     public static function getUserAddresses($userId)
     {

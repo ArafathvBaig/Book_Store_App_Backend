@@ -26,7 +26,7 @@ class BookController extends Controller
      *          mediaType="multipart/form-data",
      *          @OA\Schema(
      *              type="object",
-     *              required={"name","description","author","image","Price","quantity"},
+     *              required={"name","description","author","image","price","quantity"},
      *              @OA\Property(property="name", type="string"),
      *              @OA\Property(property="description", type="string"),
      *              @OA\Property(property="author", type="string"),
@@ -63,6 +63,11 @@ class BookController extends Controller
                 'price' => 'required',
                 'quantity' => 'required|integer'
             ]);
+
+            if(!is_file($request->image))
+            {
+                throw new BookStoreException('Not a file', 400);
+            }
 
             if ($validator->fails()) {
                 return response()->json($validator->errors()->tojson(), 400);
@@ -115,7 +120,7 @@ class BookController extends Controller
      *          mediaType="multipart/form-data",
      *          @OA\Schema(
      *              type="object",
-     *              required={"id","name","description","author","image","Price","quantity"},
+     *              required={"id","name","description","author","image","price","quantity"},
      *              @OA\Property(property="id", type="integer"),
      *              @OA\Property(property="name", type="string"),
      *              @OA\Property(property="description", type="string"),

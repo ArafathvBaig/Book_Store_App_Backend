@@ -19,7 +19,7 @@ class Cart extends Model
      * Function to add items to the cart,
      * passing all the credentials required and save them to cart
      * 
-     * @return array
+     * return array
      */
     public static function addBookToYourCart($request, $user){
         $cart = new Cart();
@@ -37,7 +37,7 @@ class Cart extends Model
      * Function to get book from the cart by bookID and userID,
      * passing the required credentials as parameters
      * 
-     * @return array
+     * return array
      */
     public static function getCartedBook($bookId, $userId)
     {
@@ -50,7 +50,7 @@ class Cart extends Model
      * Function to get book from the cart by cartID and userID,
      * passing the required credentials as parameters
      * 
-     * @return array
+     * return array
      */
     public static function getCartByIdandUserId($cartId, $userId){
         $cart = Cart::where('id', $cartId)->where('user_id', $userId)->first();
@@ -62,7 +62,7 @@ class Cart extends Model
      * Function to get all the books from the cart of an user,
      * passing the userID as parameters
      * 
-     * @return array
+     * return array
      */
     public static function getAllCartBooksOfUser($userId)
     {

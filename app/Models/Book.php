@@ -39,7 +39,7 @@ class Book extends Model
      * Function to add new book to the store,
      * passing all the required credentials as parameters,
      * 
-     * @return array
+     * return array
      */
     public static function addNewBook($request, $currentUser)
     {
@@ -74,7 +74,7 @@ class Book extends Model
      * Function to update the book in the store,
      * passing all the required credentials as parameters,
      * 
-     * @return array
+     * return array
      */
     public static function updateBook($request, $book)
     {
@@ -103,7 +103,7 @@ class Book extends Model
      * Function to delete the book image from aws s3 bucket,
      * passing the book details as parameter,
      * 
-     * @return array
+     * return array
      */
     public static function deleteBookImage($bookDetails)
     {
@@ -117,7 +117,7 @@ class Book extends Model
      * Function to add quantity to the existing book,
      * passing the book details and quantity as parameters
      * 
-     * @return array
+     * return array
      */
     public static function addQuantity($bookDetails, $quantity)
     {
@@ -131,7 +131,7 @@ class Book extends Model
      * Function to get book by name,
      * passing the book name as parameter
      * 
-     * @return array
+     * return array
      */
     public static function getBookByName($name)
     {
@@ -143,7 +143,7 @@ class Book extends Model
      * Function to get book by bookID and userID,
      * passing the bookID and userID as parameters
      * 
-     * @return array
+     * return array
      */
     public static function getBookByIdandUserId($bookId, $userId)
     {
@@ -155,7 +155,7 @@ class Book extends Model
      * Function to get book by bookID,
      * passing the bookID as parameter
      * 
-     * @return array
+     * return array
      */
     public static function getBookById($bookId)
     {
@@ -168,7 +168,7 @@ class Book extends Model
      * to be found in book name or author or description,
      * passing the key as parameter
      * 
-     * @return array
+     * return array
      */
     public static function searchBook($searchKey)
     {
@@ -185,7 +185,7 @@ class Book extends Model
      * Function to sort the books in store in ascending order,
      * based on the price of the book
      * 
-     * @return array
+     * return array
      */
     public static function ascendingOrder()
     {
@@ -196,7 +196,7 @@ class Book extends Model
      * Function to sort the books in store in descending order
      * based on the price of the book
      * 
-     * @return array
+     * return array
      */
     public static function descendingOrder()
     {

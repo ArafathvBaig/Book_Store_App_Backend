@@ -27,7 +27,7 @@ class Order extends Model
      * Function to place new order with the credentials provided,
      * taking user request, currentUser, book and cart as credentials
      * 
-     * @return array
+     * return array
      */
     public static function placeOrder($request, $currentUser, $book, $cart)
     {
@@ -51,7 +51,7 @@ class Order extends Model
      * Function to get order by cartID
      * passing cartID as parameter
      * 
-     * @return array
+     * return array
      */
     public static function getOrder($cartId)
     {
@@ -64,7 +64,7 @@ class Order extends Model
      * Function to get order by orderID and userID
      * passing orderID and userID as parameters
      * 
-     * @return array
+     * return array
      */
     public static function getOrderByOrderID($orderID, $userID)
     {

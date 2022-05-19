@@ -74,11 +74,9 @@ class OrderController extends Controller
 			$currentUser = JWTAuth::parseToken()->authenticate();
 			if ($currentUser) {
 				$user = User::checkUser($currentUser->id);
-				if($user)
-				{
+				if ($user) {
 					$order = Order::getOrder($request->cart_id);
-					if(!$order)
-					{
+					if (!$order) {
 						$cart = Cart::getCartByIdandUserId($request->cart_id, $currentUser->id);
 						if ($cart) {
 							$book = Book::getBookById($cart->book_id);
@@ -91,9 +89,9 @@ class OrderController extends Controller
 											$book->quantity  -= $cart->book_quantity;
 											$book->save();
 
-											$delay = now()->addSeconds(5);
-											$user->notify((new SendOrderDetails($order, $book, $cart, $currentUser))->delay($delay));
-
+											$delay = now()->addSeconds(600);
+											$currentUser->notify((new SendOrderDetails($order, $book, $cart, $currentUser))->delay($delay));
+											
 											// $mail = new Mailer();
 											// $check = $mail->sendOrderDetails($order, $book, $cart, $currentUser);
 
@@ -172,7 +170,7 @@ class OrderController extends Controller
 	 */
 	public function cancelOrder(Request $request)
 	{
-		try{
+		try {
 			$validator = Validator::make($request->all(), [
 				'order_id' => 'required|string'
 			]);
@@ -185,8 +183,7 @@ class OrderController extends Controller
 			if ($currentUser) {
 				$user = User::checkUser($currentUser->id);
 				if ($user) {
-					if(strlen($request->order_id) == 9)
-					{
+					if (strlen($request->order_id) == 9) {
 						$order = Order::getOrderByOrderID($request->order_id, $currentUser->id);
 						if ($order) {
 							$cart = Cart::getCartByIdandUserId($order->cart_id, $currentUser->id);
@@ -194,13 +191,13 @@ class OrderController extends Controller
 							if ($order->delete()) {
 								$book->quantity += $cart->book_quantity;
 								$book->save();
-								
-								$delay = now()->addSeconds(5);
+
+								$delay = now()->addSeconds(600);
 								$user->notify((new SendCancelOrderDetails($order, $book, $cart, $currentUser))->delay($delay));
 
 								// $mail = new Mailer();
 								// $check = $mail->sendOrderCancelDetails($order, $book, $cart, $currentUser);
-								
+
 								Log::info('Order Cancelled Successfully');
 								Cache::forget('orders');
 
@@ -224,7 +221,6 @@ class OrderController extends Controller
 			}
 			Log::error('Invalid Authorization Token');
 			throw new BookStoreException('Invalid Authorization Token', 401);
-
 		} catch (BookStoreException $exception) {
 			return response()->json([
 				'message' => $exception->message()
