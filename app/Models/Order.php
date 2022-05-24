@@ -53,9 +53,23 @@ class Order extends Model
      * 
      * return array
      */
-    public static function getOrder($cartId)
+    public static function getOrderByCartId($cartId)
     {
         $order = Order::where('cart_id', $cartId)->first();
+
+        return $order;
+    }
+
+    public static function getOrderByUserId($userId)
+    {
+        $order = Order::where('user_id', $userId)->get();
+
+        return $order;
+    }
+
+    public static function getOrderByIDandUserID($ordersId, $userID)
+    {
+        $order = Order::where('id', $ordersId)->where('user_id', $userID)->first();
 
         return $order;
     }

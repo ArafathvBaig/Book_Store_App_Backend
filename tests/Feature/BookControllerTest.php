@@ -58,7 +58,7 @@ class BookControllerTest extends TestCase
     /**
      * Successfull Add Book Test
      * This test is to Add a Book to Book Store App
-     * by using name, description, author, price and quantity as credentials
+     * by using name, description, author, image, price and quantity as credentials
      * 
      * @test
      */
@@ -82,7 +82,7 @@ class BookControllerTest extends TestCase
     /**
      * UnSuccessfull Add Book Test
      * This test is to Add a Book to Book Store App
-     * by using name, description, author, price and quantity as credentials
+     * by using name, description, author, image, price and quantity as credentials
      * Using same name for unsuccessful test
      * 
      * @test
@@ -107,7 +107,7 @@ class BookControllerTest extends TestCase
     /**
      * Successfull Update Book Test
      * This test is to Update a Book to Book Store App
-     * by using name, description, author, price, quantity and id as credentials
+     * by using name, description, author, image, price, quantity and id as credentials
      * 
      * @test
      */
@@ -132,7 +132,7 @@ class BookControllerTest extends TestCase
     /**
      * UnSuccessfull Update Book Test
      * This test is to Update a Book to Book Store App
-     * by using name, description, author, price, quantity and id as credentials
+     * by using name, description, author, image, price, quantity and id as credentials
      * Using Wrong Credentials for unsuccessful test
      * 
      * @test

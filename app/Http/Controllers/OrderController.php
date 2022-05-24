@@ -75,7 +75,7 @@ class OrderController extends Controller
 			if ($currentUser) {
 				$user = User::checkUser($currentUser->id);
 				if ($user) {
-					$order = Order::getOrder($request->cart_id);
+					$order = Order::getOrderByCartId($request->cart_id);
 					if (!$order) {
 						$cart = Cart::getCartByIdandUserId($request->cart_id, $currentUser->id);
 						if ($cart) {

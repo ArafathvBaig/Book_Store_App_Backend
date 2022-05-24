@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Password;
@@ -55,6 +57,11 @@ Route::group(['middleware' => 'api'], function () {
 
     Route::post('placeorder', [OrderController::class, 'placeOrder']);
     Route::post('cancelorder', [OrderController::class, 'cancelOrder']);
+
+    Route::post('addfeedback', [FeedbackController::class, 'addFeedback']);
+
+    Route::post('addrating', [RatingController::class, 'addRating']);
+    Route::get('getavgrating', [RatingController::class, 'getAverageRating']);
 });
 
 Route::group(['middleware' => ['jwt.verify']], function () {
