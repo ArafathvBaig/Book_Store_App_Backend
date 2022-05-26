@@ -61,7 +61,6 @@ Route::group(['middleware' => 'api'], function () {
     Route::post('addfeedback', [FeedbackController::class, 'addFeedback']);
 
     Route::post('addrating', [RatingController::class, 'addRating']);
-    Route::get('getavgrating', [RatingController::class, 'getAverageRating']);
 });
 
 Route::group(['middleware' => ['jwt.verify']], function () {

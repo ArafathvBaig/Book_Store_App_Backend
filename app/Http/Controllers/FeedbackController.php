@@ -20,6 +20,39 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @OA\Post(
+ *  path="/api/addfeedback",
+ *  summary="Add Feedback After you place any Order",
+ *  description="Add Application Feedback",
+ *  @OA\RequestBody(
+ *  	@OA\JsonContent(),
+ *      @OA\MediaType(
+ *      	mediaType="multipart/form-data",
+ *          @OA\Schema(
+ *          	type="object",
+ *              required={"user_feedback"},
+ *              @OA\Property(property="user_feedback", type="string"),
+ *        	),
+ *    	),
+ *	),
+ *  @OA\Response(response=201, description="FeedBack Added Successfully. Thank You For Your FeedBack."),
+ *  @OA\Response(response=401, description="Invalid Authorization Token"),
+ *  @OA\Response(response=404, description="Orders Not Found. First Make an Order and Give Feedback"),
+ *  @OA\Response(response=409, description="You Have Already Given Us a FeedBack. Thank You For Your FeedBack."),
+ *  security = {
+ *		{ "Bearer" : {} }
+ *  }
+ * )
+ * 
+ * Function to give application feedback,
+ * take the user_feedback,
+ * validate the user authentication token and
+ * if valid credentials and authenticated user,
+ * Successfully add the Application feedback of that user.
+ * 
+ * @return \Illuminate\Http\JsonResponse
+ */
 class FeedbackController extends Controller
 {
     public function addFeedback(Request $request)

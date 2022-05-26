@@ -20,6 +20,41 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @OA\Post(
+ *  path="/api/addrating",
+ *  summary="Give Rating for a Book",
+ *  description="Give Rating for a Book You Ordered",
+ *  @OA\RequestBody(
+ *  	@OA\JsonContent(),
+ *      @OA\MediaType(
+ *      	mediaType="multipart/form-data",
+ *          @OA\Schema(
+ *          	type="object",
+ *              required={"user_rating","order_id"},
+ *              @OA\Property(property="user_rating", type="integer"),
+ *              @OA\Property(property="order_id", type="integer"),
+ *        	),
+ *    	),
+ *	),
+ *  @OA\Response(response=201, description="Rating Added Successfully"),
+ *  @OA\Response(response=401, description="Invalid Authorization Token"),
+ *  @OA\Response(response=404, description="Order Not Found"),
+ *  @OA\Response(response=409, description="You Already Gave Rating For Your Order"),
+ *  @OA\Response(response=406, description="Rating Should be +ve and less than 5"),
+ *  security = {
+ *		{ "Bearer" : {} }
+ *  }
+ * )
+ * 
+ * Function to Add Rating for the Book Purchased,
+ * take the User_rating and order_id,
+ * validate the user authentication token and
+ * if valid credentials and authenticated user,
+ * Give the Rating for the Order you Placed.
+ * 
+ * @return \Illuminate\Http\JsonResponse
+ */
 class RatingController extends Controller
 {
     public function addRating(Request $request)
@@ -45,7 +80,7 @@ class RatingController extends Controller
                             $rated = Rating::getRating($request->order_id, $currentUser->id, $book->id);
                             if (!$rated) {
                                 if ($request->user_rating >= 0 && $request->user_rating <= 5) {
-                                    $rating = Rating::addRating($request, $currentUser->id, $book->id);
+                                    $rating = Rating::addRating($request, $currentUser->id, $book);
                                     if ($rating) {
                                         Log::info('Rating Added Successfully');
                                         return response()->json([
@@ -64,49 +99,6 @@ class RatingController extends Controller
                     }
                     Log::error('Order Not Found');
                     throw new BookStoreException('Order Not Found', 404);
-                }
-                Log::error('You are Not a User');
-                throw new BookStoreException('You are Not a User', 404);
-            }
-            Log::error('Invalid Authorization Token');
-            throw new BookStoreException('Invalid Authorization Token', 401);
-        } catch (BookStoreException $exception) {
-            return response()->json([
-                'message' => $exception->message()
-            ], $exception->statusCode());
-        }
-    }
-
-    public function getAverageRating(Request $request)
-    {
-        try {
-            $validator = Validator::make($request->all(), [
-                'book_id' => 'required|integer'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json($validator->errors()->toJson(), 400);
-            }
-
-            $currentUser = JWTAuth::parseToken()->authenticate();
-            if ($currentUser) {
-                $user = User::checkUser($currentUser->id);
-                if ($user) {
-                    $book = Book::getBookById($request->book_id);
-                    if ($book) {
-                        $rating = Rating::getAverageRating($request->book_id);
-                        if ($rating) {
-                            Log::info('We Have Ratings For the Book');
-                            return response()->json([
-                                'message' => 'Average Rating of The Book::',
-                                'Average Rating' => $rating
-                            ], 200);
-                        }
-                        Log::error('Ratings Not Yet Given');
-                        throw new BookStoreException('Ratings Not Yet Given', 404);
-                    }
-                    Log::error('Book Not Found');
-                    throw new BookStoreException('Book Not Found', 404);
                 }
                 Log::error('You are Not a User');
                 throw new BookStoreException('You are Not a User', 404);

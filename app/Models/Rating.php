@@ -16,14 +16,17 @@ class Rating extends Model
         'user_rating'
     ];
 
-    public static function addRating($request, $userId, $bookId)
+    public static function addRating($request, $userId, $book)
     {
         $rating = new Rating();
         $rating->user_id = $userId;
-        $rating->book_id = $bookId;
+        $rating->book_id = $book->id;
         $rating->order_id = $request->order_id;
         $rating->user_rating = $request->user_rating;
         $rating->save();
+
+        $book->avg_rating = Rating::where('book_id', $book->id)->pluck('user_rating')->avg();
+        $book->save();
 
         return $rating;
     }

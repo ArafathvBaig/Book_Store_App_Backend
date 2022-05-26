@@ -726,6 +726,51 @@
                 ]
             }
         },
+        "/api/addfeedback": {
+            "post": {
+                "summary": "Add Feedback After you place any Order",
+                "description": "Add Application Feedback",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "user_feedback"
+                                ],
+                                "properties": {
+                                    "user_feedback": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "FeedBack Added Successfully. Thank You For Your FeedBack."
+                    },
+                    "401": {
+                        "description": "Invalid Authorization Token"
+                    },
+                    "404": {
+                        "description": "Orders Not Found. First Make an Order and Give Feedback"
+                    },
+                    "409": {
+                        "description": "You Have Already Given Us a FeedBack. Thank You For Your FeedBack."
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/api/forgotpassword": {
             "post": {
                 "summary": "Forgot Password",
@@ -895,6 +940,58 @@
                     },
                     "406": {
                         "description": "Invalid OrderID"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/addrating": {
+            "post": {
+                "summary": "Give Rating for a Book",
+                "description": "Give Rating for a Book You Ordered",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "user_rating",
+                                    "order_id"
+                                ],
+                                "properties": {
+                                    "user_rating": {
+                                        "type": "integer"
+                                    },
+                                    "order_id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Rating Added Successfully"
+                    },
+                    "401": {
+                        "description": "Invalid Authorization Token"
+                    },
+                    "404": {
+                        "description": "Order Not Found"
+                    },
+                    "409": {
+                        "description": "You Already Gave Rating For Your Order"
+                    },
+                    "406": {
+                        "description": "Rating Should be +ve and less than 5"
                     }
                 },
                 "security": [
